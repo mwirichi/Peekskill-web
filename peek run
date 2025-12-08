@@ -1,0 +1,4 @@
+cp .env.example .env       
+npx prisma db push
+npx prisma db seed
+npm run dev
