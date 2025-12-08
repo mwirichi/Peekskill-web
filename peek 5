@@ -1,0 +1,18 @@
+# Database – works instantly (no setup)
+DATABASE_URL="file:./dev.db"
+
+# NextAuth – works without Google for now
+NEXTAUTH_SECRET="supersecret1234567890"
+NEXTAUTH_URL="http://localhost:3000"
+
+# Stripe – test mode (use card 4242 4242 4242 4242)
+STRIPE_SECRET_KEY="sk_test_51Gp3PtSE9b9r2r9r9r9r9r9r9r9r9r9r9r9r9r9r9r9r9r9r9r9r9r9r9r9r"
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY="pk_test_51Gp3PtSE9b9r2r9r9r9r9r9r9r9r9r9r9r9r9r9r9r9r9r9r9r9r9r9r9r9r"
+STRIPE_WEBHOOK_SECRET="whsec_test_webhook_secret"
+
+# Resend – fake key (emails go to console only)
+RESEND_API_KEY="re_fake_key_1234567890"
+
+# UploadThing – fake key (images use placeholder)
+UPLOADTHING_SECRET="fake_uploadthing_secret"
+UPLOADTHING_APP_ID="fake_app_id"
