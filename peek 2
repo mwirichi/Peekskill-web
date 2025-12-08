@@ -1,0 +1,101 @@
+[03:46, 08/12/2025] Peekskill International Ltd: model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  image         String?
+  password      String?   // ← added for credentials login
+  role          Role      @default(USER)
+  currency      Currency  @default(USD)
+  language      Language  @default(EN)
+  accounts      Account[]
+  sessions      Session[]
+  orders        Order[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+// ... keep all other models exactly as before
+[03:46, 08/12/2025] Peekskill International Ltd: import { PrismaClient } from '@prisma/client';
+import bcrypt from 'bcrypt';
+
+const prisma = new PrismaClient();
+
+async function main() {
+  const hash = await bcrypt.hash('admin123', 12);
+
+  await prisma.user.upsert({
+    where: { email: 'admin@peekskill.com' },
+    update: {},
+    create: {
+      email: 'admin@peekskill.com',
+      name: 'Admin',
+      password: hash,
+      role: 'ADMIN',
+    },
+  });
+
+  await prisma.product.createMany({
+    data: [
+      { name: "Wireless Headphones", description: "Premium ANC", price: 299.99, currency: "USD", stock: 100, category: "Electronics", imageUrl: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800" },
+      { name: "Écouteurs Sans Fil", description: "Haut de gamme", price: 279, currency: "EUR", sto…
+[03:47, 08/12/2025] Peekskill International Ltd: DATABASE_URL="postgresql://..."
+
+NEXTAUTH_SECRET="superlongrandomstring1234567890"
+NEXTAUTH_URL="http://localhost:3000"
+
+GOOGLE_CLIENT_ID="your-google-id"
+GOOGLE_CLIENT_SECRET="your-google-secret"
+
+STRIPE_SECRET_KEY="sk_test_51..."
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY="pk_test_51..."
+STRIPE_WEBHOOK_SECRET="whsec_..."
+
+RESEND_API_KEY="re_..."
+[03:47, 08/12/2025] Peekskill International Ltd: import './globals.css';
+import { Inter } from 'next/font/google';
+import { NextIntlClientProvider } from 'next-intl';
+import { getMessages } from 'next-intl/server';
+import { SessionProvider } from 'next-auth';
+import { auth } from '@/lib/auth';
+import Navbar from '@/components/Navbar';
+import { CartProvider } from '@/components/CartProvider';
+import { Toaster } from '@/components/ui/toast';
+
+const inter = Inter({ subsets: ['latin'] });
+
+export const metadata = {
+  title: 'Peekskill International',
+  description: 'Global ecommerce store',
+};
+
+export default async function RootLayout({
+  children,
+  params: { locale = 'en' },
+}: {
+  children: React.ReactNode;
+  params: { locale: string };
+}) {
+  const messages = await getMessages();
+  const session = await au…
+[03:47, 08/12/2025] Peekskill International Ltd: 'use client';
+
+import { CartProvider as ShoppingCartProvider } from 'use-shopping-cart';
+
+export function CartProvider({ children }: { children: React.ReactNode }) {
+  return (
+    <ShoppingCartProvider
+      mode="payment"
+      cartMode="client-only"
+      stripe={process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!}
+      successUrl={${process.env.NEXTAUTH_URL}/success}
+      cancelUrl={${process.env.NEXTAUTH_URL}/cart}
+      currency="USD"
+      billingAddressCollection={true}
+      shouldPersist={true}
+    >
+      {children}
+    </ShoppingCartProvider>
+  );
+}
+
+export { CartProvider };
